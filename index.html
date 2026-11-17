@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SupeRR Selector S2 – Players Under Pressure</title>
+<style>
+:root{--bg:#fbf7f2;--card:#fff;--ink:#12204a;--mut:#5d6785;--pk:#ea1b85;--nv:#12204a;--ln:#e5dfd6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1226;--card:#161d3a;--ink:#eef0fa;--mut:#9aa3c7;--pk:#ff4fa3;--nv:#8fa3ff;--ln:#2a3358}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Georgia,"Times New Roman",serif}
+main{max-width:980px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:clamp(26px,5vw,40px);line-height:1.1;margin:6px 0 8px;letter-spacing:-.02em}
+h2{font-size:18px;margin:28px 0 8px}
+.k{font:700 11px/1 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--pk)}
+p{margin:6px 0;max-width:70ch}.m{color:var(--mut);font-size:13px}
+.tabs{display:flex;gap:8px;margin:18px 0 10px}
+button{font:600 14px system-ui,sans-serif;padding:8px 16px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:99px;cursor:pointer}
+button.on{background:var(--ink);color:var(--bg)}
+.row{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--ln);cursor:pointer}
+.rk{font:700 18px system-ui,sans-serif;color:var(--pk)}
+.nm{font-weight:700}.bars{margin-top:5px}
+.b{height:8px;border-radius:4px;margin:3px 0}.b.p{background:var(--pk)}.b.q{background:var(--nv);opacity:.75}
+.lg{font:12px system-ui,sans-serif;color:var(--mut);display:flex;justify-content:space-between}
+.det{display:none;margin-top:8px;font:13px/1.5 system-ui,sans-serif;color:var(--mut)}
+.row.open .det{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px}
+.c{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:12px}
+.c b{display:block;font:700 22px system-ui,sans-serif;color:var(--pk)}
+.sc{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font:12.5px system-ui,sans-serif;min-width:560px}
+th,td{padding:6px 8px;text-align:right;border-bottom:1px solid var(--ln)}th:nth-child(2),td:nth-child(2){text-align:left}
+th{color:var(--mut);font-weight:600}
+</style></head><body><main>
+<div class="k">SupeRR Selector Season 2 · Round 1</div>
+<h1>Who actually delivers when the game is on the line?</h1>
+<p>I rated every batter and bowler in IPL and T20I matches from 2022 to 2026 by how much value they add against the league average for the same match state, on the balls where the next delivery can swing the result the most.</p>
+<div class="grid">
+<div class="c"><b>194,416</b><span class="m">deliveries from 814 matches</span></div>
+<div class="c"><b>63%</b><span class="m">of all win-probability swing sits in the top 25% of balls I call high pressure</span></div>
+<div class="c"><b>0.87</b><span class="m">chase AUC of the win-probability model (calibrated)</span></div>
+</div>
+<div class="tabs"><button id="tb" class="on">Top 10 batters</button><button id="tw">Top 10 bowlers</button></div>
+<p class="m" id="sub"></p>
+<div id="list"></div>
+<p class="m">Pink bar: runs above league-average par per 100 balls on high-pressure deliveries. Navy bar: the same measure in normal situations. Tap a row for details.</p>
+<h2>How I defined pressure</h2>
+<p>A gradient-boosted model estimates the batting side’s chance of winning before every ball. Leverage is the expected size of the swing in that chance from the next ball across all outcomes. High pressure means the top quartile of leverage within each innings, so first-innings collapses count too.</p>
+<h2>How the rating works</h2>
+<p>Each player’s pressure record is blended with his overall skill: E = s + (p − s) × N / (N + 500), where N is his number of pressure balls. A consistency score (share of pressure matches with positive value) adds 20% of the final score.</p>
+<h2>How far to trust it</h2>
+<div class="grid" id="rel"></div>
+<p>Raw pressure-only performance barely repeats between two halves of the data, so the rating leans on overall skill. The batting order below the top three is close, and the bowling list is best read as a shortlist of strong, pressure-tested bowlers.</p>
+<h2>Full table</h2>
+<div class="sc"><table id="tbl"></table></div>
+</main>
+<script>
+var D={"bat":[{"n":1,"name":"Vaibhav Sooryavanshi","pb":181,"pm":31,"p":93.5,"q":79.7,"sk":56.1,"E":65.6,"C":68,"a":220.4,"b":222.7,"lo":1,"hi":2,"top":98,"ipl":81},{"n":2,"name":"Phil Salt","pb":404,"pm":62,"p":53.9,"q":29.1,"sk":29.8,"E":40.5,"C":76,"a":176.7,"b":169.0,"lo":2,"hi":13,"top":81,"ipl":45},{"n":3,"name":"Heinrich Klaasen","pb":275,"pm":51,"p":42.0,"q":32.2,"sk":28.1,"E":33.1,"C":71,"a":185.5,"b":162.6,"lo":3,"hi":25,"top":62,"ipl":85},{"n":4,"name":"Abhishek Sharma","pb":580,"pm":108,"p":30.0,"q":45.8,"sk":36.7,"E":33.1,"C":68,"a":161.4,"b":195.7,"lo":2,"hi":28,"top":59,"ipl":57},{"n":5,"name":"Shreyas Iyer","pb":454,"pm":67,"p":39.8,"q":11.0,"sk":15.8,"E":27.2,"C":76,"a":161.7,"b":152.1,"lo":4,"hi":25,"top":40,"ipl":65},{"n":6,"name":"Yashasvi Jaiswal","pb":472,"pm":77,"p":43.5,"q":12.0,"sk":17.3,"E":30.0,"C":69,"a":168.6,"b":149.9,"lo":3,"hi":26,"top":59,"ipl":80},{"n":7,"name":"Tim David","pb":336,"pm":60,"p":36.6,"q":40.0,"sk":31.0,"E":33.2,"C":58,"a":174.4,"b":178.6,"lo":2,"hi":28,"top":57,"ipl":52},{"n":8,"name":"Travis Head","pb":353,"pm":57,"p":31.5,"q":31.7,"sk":24.7,"E":27.5,"C":63,"a":156.7,"b":186.3,"lo":5,"hi":39,"top":40,"ipl":70},{"n":9,"name":"Finn Allen","pb":219,"pm":37,"p":33.3,"q":38.0,"sk":26.5,"E":28.6,"C":58,"a":159.4,"b":181.9,"lo":3,"hi":54,"top":39,"ipl":20},{"n":10,"name":"Suryakumar Yadav","pb":595,"pm":97,"p":20.2,"q":37.2,"sk":29.9,"E":24.7,"C":68,"a":160.7,"b":169.0,"lo":5,"hi":39,"top":26,"ipl":50}],"bat_rel":[0.32,0.25,0.03],"bowl":[{"n":1,"name":"Abrar Ahmed","pb":155,"pm":28,"p":47.4,"q":16.6,"sk":16.3,"E":23.6,"C":62,"a":6.5,"b":6.8,"lo":1,"hi":24,"top":71,"ipl":0},{"n":2,"name":"Shaheen Afridi","pb":281,"pm":39,"p":37.6,"q":6.7,"sk":12.3,"E":21.6,"C":59,"a":7.3,"b":8.5,"lo":1,"hi":38,"top":56,"ipl":0},{"n":3,"name":"Mohammad Nawaz","pb":215,"pm":38,"p":21.6,"q":27.6,"sk":20.1,"E":20.5,"C":62,"a":7.5,"b":7.1,"lo":1,"hi":38,"top":48,"ipl":0},{"n":4,"name":"Josh Hazlewood","pb":427,"pm":52,"p":26.5,"q":13.9,"sk":14.6,"E":20.2,"C":60,"a":8.4,"b":8.5,"lo":1,"hi":36,"top":60,"ipl":64},{"n":5,"name":"Mujeeb Ur Rahman","pb":195,"pm":30,"p":29.9,"q":20.5,"sk":16.5,"E":20.2,"C":57,"a":7.0,"b":7.2,"lo":2,"hi":47,"top":46,"ipl":2},{"n":6,"name":"Sunil Narine","pb":364,"pm":60,"p":24.1,"q":13.9,"sk":13.7,"E":18.1,"C":62,"a":6.6,"b":7.1,"lo":4,"hi":35,"top":34,"ipl":100},{"n":7,"name":"Abbas Afridi","pb":107,"pm":18,"p":31.5,"q":24.9,"sk":15.8,"E":18.6,"C":53,"a":8.4,"b":8.5,"lo":4,"hi":42,"top":31,"ipl":12},{"n":8,"name":"Kuldeep Yadav","pb":445,"pm":74,"p":23.4,"q":7.8,"sk":9.9,"E":16.4,"C":60,"a":8.0,"b":8.0,"lo":4,"hi":36,"top":32,"ipl":73},{"n":9,"name":"Varun Chakravarthy","pb":494,"pm":78,"p":18.6,"q":21.6,"sk":18.3,"E":18.4,"C":52,"a":7.9,"b":8.2,"lo":5,"hi":30,"top":38,"ipl":65},{"n":10,"name":"Mahedi Hasan","pb":258,"pm":38,"p":21.0,"q":27.2,"sk":18.7,"E":19.5,"C":48,"a":7.7,"b":6.9,"lo":4,"hi":46,"top":28,"ipl":0}],"bowl_rel":[0.17,0.1,0.05]};
+var role='bat';
+function render(){
+ var rows=D[role],isB=role==='bat';
+ var mx=Math.max.apply(null,rows.map(function(r){return Math.max(r.p,r.q)}));
+ document.getElementById('sub').textContent=isB?'Ranked by pressure rating; the bars compare each batter’s pressure level with his normal level.':'Ranked by pressure rating; the bars compare each bowler’s pressure level with his normal level.';
+ var h='';
+ rows.forEach(function(r){
+  h+='<div class="row" onclick="this.classList.toggle(\'open\')"><div class="rk">'+r.n+'</div><div><div class="nm">'+r.name+'</div><div class="bars"><div class="b p" style="width:'+Math.max(2,r.p/mx*100)+'%"></div><div class="b q" style="width:'+Math.max(2,r.q/mx*100)+'%"></div></div><div class="lg"><span>Pressure '+(r.p>0?'+':'')+r.p+' · Normal '+(r.q>0?'+':'')+r.q+'</span><span>Rating '+(r.E>0?'+':'')+r.E+'</span></div><div class="det">'+r.pb+' pressure balls in '+r.pm+' matches · '+(isB?'strike rate ':'economy ')+r.a+' under pressure vs '+r.b+' normally · consistency '+r.C+'% · top-10 in '+r.top+'% of bootstrap runs (rank range '+r.lo+'–'+r.hi+') · '+r.ipl+'% of data from IPL</div></div></div>';
+ });
+ document.getElementById('list').innerHTML=h;
+ var t='<tr><th>#</th><th>Player</th><th>Pressure balls</th><th>Matches</th><th>Pressure</th><th>Normal</th><th>Skill</th><th>Rating</th><th>Consistency</th><th>Rank range</th></tr>';
+ rows.forEach(function(r){t+='<tr><td>'+r.n+'</td><td>'+r.name+'</td><td>'+r.pb+'</td><td>'+r.pm+'</td><td>'+r.p+'</td><td>'+r.q+'</td><td>'+r.sk+'</td><td>'+r.E+'</td><td>'+r.C+'%</td><td>'+r.lo+'–'+r.hi+'</td></tr>'});
+ document.getElementById('tbl').innerHTML=t;
+ var re=isB?D.bat_rel:D.bowl_rel;
+ document.getElementById('rel').innerHTML='<div class="c"><b>'+re[0]+'</b><span class="m">split-half correlation of overall skill</span></div><div class="c"><b>'+re[1]+'</b><span class="m">split-half correlation of the final rating</span></div><div class="c"><b>'+re[2]+'</b><span class="m">split-half correlation of raw pressure value</span></div>';
+}
+document.getElementById('tb').onclick=function(){role='bat';this.className='on';document.getElementById('tw').className='';render()};
+document.getElementById('tw').onclick=function(){role='bowl';this.className='on';document.getElementById('tb').className='';render()};
+render();
+</script></body></html>
